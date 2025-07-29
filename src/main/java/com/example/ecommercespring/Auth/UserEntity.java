@@ -31,6 +31,6 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private RolesEnums roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AddressEntity> addresses;
 }

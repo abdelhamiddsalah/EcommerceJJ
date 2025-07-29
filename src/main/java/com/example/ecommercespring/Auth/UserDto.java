@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.*;
+
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,4 +25,5 @@ public class UserDto {
     @NotBlank(message = "LastName is  required")
     private String lastName;
     private RolesEnums roles;
+    private List<AddresseDto> address;
 }

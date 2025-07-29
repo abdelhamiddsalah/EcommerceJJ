@@ -47,5 +47,18 @@ public class JWTService {
                 .getBody()
                 .get("id", Long.class);
     }
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        Date expiration = Jwts.parserBuilder()
+                .setSigningKey(getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return expiration.before(new Date());
+    }
 
 }

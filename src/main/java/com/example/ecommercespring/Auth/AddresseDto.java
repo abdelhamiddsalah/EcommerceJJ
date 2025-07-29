@@ -1,24 +1,14 @@
 package com.example.ecommercespring.Auth;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "addresses")
-public class AddressEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AddresseDto {
 
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
 
     private String Addressline1;
     private String Addressline2;
@@ -27,5 +17,4 @@ public class AddressEntity {
     private String country;
     private int postcode;
     private boolean active;
-
 }

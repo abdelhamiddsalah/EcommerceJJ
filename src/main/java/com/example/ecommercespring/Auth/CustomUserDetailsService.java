@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -19,7 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
         return new CustomUserDetails(
                 user.getUsername(),
-                user.getPassword()
+                user.getPassword(),
+                user.getId(),
+                List.of() // أو authorities لاحقاً من enum
         );
+
     }
 }
