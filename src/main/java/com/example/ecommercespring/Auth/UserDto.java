@@ -11,19 +11,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    @NotBlank(message = "Username is required")
-    @Size(min = 4,max = 12)
+    private Long id;
+    @Size(min = 3, max = 50)
     private String username;
-    @NotBlank(message = "password is  required")
-    @Size(min = 6)
+
     private String password;
-    @Email
-    @NotBlank(message = "Email is  requires")
+    @Email(message = "Email is Error")
     private String email;
-    @NotBlank(message = "firstName is  required")
+
     private String firstName;
-    @NotBlank(message = "LastName is  required")
+
     private String lastName;
-    private RolesEnums roles;
+
+    private String roles;
+
     private List<AddresseDto> address;
 }
+

@@ -8,6 +8,7 @@ public interface UserRepositry extends JpaRepository<UserEntity, Long> {
     // الخيار الأفضل
     Optional<UserEntity> getById(long id);
     Optional<UserEntity>  getByUsername(String username);
+    UserEntity findByEmail(String email);
     // أو لو عايز بشكل أوضح
     // UserEntity findUserEntityById(long id);
 }

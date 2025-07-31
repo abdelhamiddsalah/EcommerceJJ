@@ -32,5 +32,5 @@ public class UserEntity {
     private RolesEnums roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AddressEntity> addresses;
+    private List<AddressEntity> address;
 }

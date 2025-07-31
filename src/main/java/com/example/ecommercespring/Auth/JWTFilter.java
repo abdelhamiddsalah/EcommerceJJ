@@ -29,8 +29,11 @@ public class JWTFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String path = request.getServletPath();
-        if (path.equals("/api/auth") || // ✅ صحّح هنا
-                path.startsWith("/auth") ||
+        if (path.equals("/api/register") || // ✅ صحّح هنا
+                path.startsWith("/register") ||
+                path.equals("/api/reset-password") ||
+                path.equals("/api/login") || // ✅ ضيفه هنا
+                path.equals("/api/forgot-password") ||
                 path.startsWith("/swagger-ui") ||
                 path.startsWith("/v3/api-docs") ||
                 path.startsWith("/swagger-resources") ||
