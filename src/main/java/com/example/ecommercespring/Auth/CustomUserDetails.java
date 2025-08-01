@@ -2,23 +2,20 @@ package com.example.ecommercespring.Auth;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
-import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
-    private String username;
+    private String email;
     private String password;
     private Long id;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String username, String password, Long id,Collection<? extends GrantedAuthority> authorities) {
-        this.username = username;
+    public CustomUserDetails(String email, String password, Long id,Collection<? extends GrantedAuthority> authorities) {
+        this.email = email;
         this.password = password;
         this.id = id;
         this.authorities = authorities;
     }
-
 
 
     public Long getId() {
@@ -27,8 +24,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return authorities;
     }
+
 
     @Override
     public String getPassword() {
@@ -37,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

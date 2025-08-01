@@ -10,6 +10,7 @@ import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 @Service
@@ -21,14 +22,21 @@ public class JWTService {
     }
 
     public String generateToken(CustomUserDetails userDetails) {
-        return Jwts.builder().setSubject(userDetails.getUsername())
+        // نحول السلطات (Authorities) إلى List<String>
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(auth -> auth.getAuthority().replace("ROLE_", "")) // نحذف ROLE_ عشان التوكن يكون أنضف
+                .toList();
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
                 .claim("id", userDetails.getId())
-                .claim("role",userDetails.getAuthorities())
+                .claim("role", roles) // ✅ نضيف قائمة الأدوار كـ Strings
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS)))
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()

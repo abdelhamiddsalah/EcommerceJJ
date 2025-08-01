@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +33,11 @@ public class UserService {
     @Transactional
     public UserResponse createUser(UserDto userDto) {
 
- UserEntity user= userRepo.findByEmail(userDto.getEmail());
- if(user!=null){
-     throw  new UserNotFoundException("User with email " + userDto.getEmail() + "  found");
- }
+        Optional<UserEntity> existingUser = userRepo.findByEmail(userDto.getEmail());
+        if (existingUser.isPresent()) {
+            throw new UserNotFoundException("User with email " + userDto.getEmail() + " already exists");
+        }
+
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(userDto.getUsername());
         userEntity.setEmail(userDto.getEmail());
@@ -70,7 +72,7 @@ public class UserService {
 
 
         CustomUserDetails userDetails = new CustomUserDetails(
-                savedUser.getUsername(),
+                savedUser.getEmail(),
                 savedUser.getPassword(),
                 savedUser.getId(),
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + savedUser.getRoles().name()))
@@ -83,33 +85,34 @@ public class UserService {
 
     UserResponse Login(UserDto userDto) {
         // 1. ابحث عن المستخدم في قاعدة البيانات
-        UserEntity userEntity = userRepo.findByEmail(userDto.getEmail());
-        if (userEntity == null) {
+        UserEntity user = userRepo.findByEmail(userDto.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userDto.getEmail()));
+        if (user == null) {
             throw new UserNotFoundException("User not found");
         }
 
-
 // ✅ تحقق من الباسورد
-        if (!passwordEncoder.matches(userDto.getPassword(), userEntity.getPassword())) {
+        if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
             throw new UserNotFoundException("Invalid password");
         }
 
 // ✅ استخدم بيانات المستخدم الحقيقي
         CustomUserDetails userDetails = new CustomUserDetails(
-                userEntity.getUsername(),
-                userEntity.getPassword(),
-                userEntity.getId(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + userEntity.getRoles().name()))
+                user.getUsername(),
+                user.getPassword(),
+                user.getId(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRoles().name()))
         );
 
         String token = jwtService.generateToken(userDetails);
 
-        return new UserResponse(token, userEntity.getRoles().name());
+        return new UserResponse(token, user.getRoles().name());
 
     }
 
     public void processForgotPassword(String email) {
-        UserEntity user = userRepo.findByEmail(email);
+        UserEntity user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
         if (user == null) return;
 
         String token = UUID.randomUUID().toString();
@@ -145,7 +148,7 @@ public class UserService {
         return "Password reset successfully";
     }
 
-
-
-
+    List<UserEntity> getUsers() {
+        return userRepo.findAll();
+    }
 }
