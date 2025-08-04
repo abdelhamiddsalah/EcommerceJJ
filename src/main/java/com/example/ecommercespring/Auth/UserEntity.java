@@ -1,5 +1,6 @@
 package com.example.ecommercespring.Auth;
 
+import com.example.ecommercespring.Cart.CartEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,4 +34,8 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AddressEntity> address;
+
+    @OneToMany(mappedBy = "user")
+    private List<CartEntity> carts;
+
 }

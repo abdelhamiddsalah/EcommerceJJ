@@ -1,5 +1,6 @@
 package com.example.ecommercespring.products;
 
+import com.example.ecommercespring.Cateories.CategoryEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +22,8 @@ public class productEntity {
    private String LongDescription;
     @Column(name = "price")
    private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity  category;
 }

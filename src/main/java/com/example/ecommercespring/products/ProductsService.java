@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductsService {
@@ -28,5 +29,15 @@ public class ProductsService {
         productsRepo.deleteById(id);
         return productsRepo.findAll();
     }
+
+    public List<productEntity> bestSellingProducts() {
+        List<productEntity> products = productsRepo.findAll();
+
+        return products.stream()
+                .sorted((p1, p2) -> Double.compare(p2.getPrice(), p1.getPrice())) // ترتيب تنازلي حسب السعر
+                .limit(10) // نجيب أول 10 منتجات فقط
+                .collect(Collectors.toList());
+    }
+
 
 }

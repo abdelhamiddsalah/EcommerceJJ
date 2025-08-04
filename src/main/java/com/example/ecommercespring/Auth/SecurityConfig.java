@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register", "/api/login","/api/forgot-password","/api/reset-password").permitAll()
+                        .requestMatchers("/api/register", "/api/login","/api/forgot-password","/api/reset-password","/api/allCategories").permitAll()
                         .requestMatchers("/api/uploadpdf/view/**").permitAll()
                         .anyRequest().authenticated()
                 )

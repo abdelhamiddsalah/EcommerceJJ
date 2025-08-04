@@ -32,6 +32,7 @@ public class JWTFilter extends OncePerRequestFilter {
         if (path.equals("/api/register") || // ✅ صحّح هنا
                 path.startsWith("/register") ||
                 path.equals("/api/reset-password") ||
+                path.equals("/api/allCategories") ||
                 path.equals("/api/login") || // ✅ ضيفه هنا
                 path.equals("/api/forgot-password") ||
                 path.startsWith("/swagger-ui") ||
