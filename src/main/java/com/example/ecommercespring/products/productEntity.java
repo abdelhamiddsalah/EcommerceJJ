@@ -26,4 +26,6 @@ public class productEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity  category;
+
+
 }

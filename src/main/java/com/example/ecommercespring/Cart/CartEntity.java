@@ -2,6 +2,7 @@ package com.example.ecommercespring.Cart;
 
 import com.example.ecommercespring.Auth.UserEntity;
 import com.example.ecommercespring.products.productEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +36,9 @@ public class CartEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private UserEntity user;
+
 
 }
 

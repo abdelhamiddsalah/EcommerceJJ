@@ -28,7 +28,7 @@ public class FavouritesService {
         productEntity product = products.findById(productId)
                 .orElseThrow(() -> new UserNotFoundException("Product not found"));
 
-        FavouriteEntity favouriteEntity = favouritesRepo.findByUser(userId).orElseGet(() -> {
+        FavouriteEntity favouriteEntity = favouritesRepo.findByUser(user).orElseGet(() -> {
             FavouriteEntity favouriteEntity1 = new FavouriteEntity();
             favouriteEntity1.setUser(user);
             favouriteEntity1.setNumberFavourites(0);

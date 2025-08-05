@@ -55,6 +55,18 @@ public class JWTService {
                 .getBody()
                 .get("id", Long.class);
     }
+
+    public List<String> extractRoles(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", List.class);
+    }
+
+
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
